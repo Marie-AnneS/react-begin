@@ -5,6 +5,8 @@ import Order from "./Order";
 import sampleFishes from "../sample-fishes";
 import Fish from "./Fish";
 
+import base from "../base";
+
 class App extends React.Component {
   //2 ways to have a state : 1 est de le mettre dans un constructeur
   // constructor() {
@@ -15,6 +17,18 @@ class App extends React.Component {
     fishes: {},
     order: {}
   };
+
+  componentDidMount() {
+    const { params } = this.props.match;
+    this.ref = base.syncState(`${params.storeId}/fishes`, {
+      context: this,
+      state: 'fishes'
+    });
+  }
+
+  componentWillUnmount(){
+    base.removeBinding(this.ref);
+  }
 
   addFish = fish => {
     // creer une copies du state existant
@@ -30,14 +44,14 @@ class App extends React.Component {
     this.setState({ fishes: sampleFishes });
   };
 
-  addToOrder = (key) => {
+  addToOrder = key => {
     // 1. prendre une copies du state existant
     const order = { ...this.state.order };
     // 2.ajouter une commande ou update le nombre de commande
-    order[key] = order[key] + 1 || 1
+    order[key] = order[key] + 1 || 1;
     // 3. call setState et update le state
     this.setState({ order });
-  }
+  };
 
   render() {
     return (
@@ -46,11 +60,16 @@ class App extends React.Component {
           <Header tagline="Fresh Seafood Market" />
           <ul className="fishes">
             {Object.keys(this.state.fishes).map(key => (
-              <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder} />
+              <Fish
+                key={key}
+                index={key}
+                details={this.state.fishes[key]}
+                addToOrder={this.addToOrder}
+              />
             ))}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order}/>
+        <Order fishes={this.state.fishes} order={this.state.order} />
         <Inventory
           addFish={this.addFish}
           loadSampleFishes={this.loadSampleFishes}
