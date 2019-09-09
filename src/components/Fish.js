@@ -25,7 +25,7 @@ export class Fish extends Component {
             this.props.addToOrder(this.props.index);
           }}
         >
-          {isAvailable ? "Add To Order" : "Sold out!"}}
+          {isAvailable ? "Add To Order" : "Sold out!"}
         </button>
       </li>
     );
