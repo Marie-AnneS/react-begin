@@ -11,6 +11,8 @@ class EditFishForm extends React.Component {
     // take the props from the parent (fn of child)
       this.props.updateFish(this.props.index, updatedFish)
   };
+
+
   render() {
     return (
       <div className="fish-edit">
@@ -46,6 +48,8 @@ class EditFishForm extends React.Component {
           value={this.props.fish.image}
           type="text"
         />
+        <button onClick={() => this.props.deleteFish(this.props.index)}>Remove fish</button>
+  
       </div>
     );
   }
